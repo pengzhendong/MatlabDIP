@@ -3,13 +3,17 @@ function get_histogram(file)
 [pic, map] = read_img(file);
 
 if ~isempty(map)
+    set (gcf,'Position',[350,200,700,300])
     figure(1);
     subplot(1, 2, 1);
     imshow(pic, map);
     
-    figure(1);
-    subplot(1, 2, 2);
-    imhist(pic);
+    PR = get_probability(pic);
+    figure(1);subplot(1,2,2);bar(0:255, PR,'g') %绘制直方图
+    xlim([0 255]);
+    title('原图像直方图')
+    xlabel('Grey level')
+    ylabel('Probability of occurrence')
 else
     figure(1);
     subplot(2, 3, 1);

@@ -37,6 +37,7 @@ else
         i = 0;
     end
 end
+set (gcf,'Position',[350,200,700,300])
 
 result = cat(3, h, s, i);
 figure(1);
