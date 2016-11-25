@@ -16,10 +16,11 @@ else
         width = width + bitshift(data(18 + i), (i - 1) * 8);
         height = height + bitshift(data(22 + i), (i - 1) * 8);
     end
-    
+        
     depth = data(29) + bitshift(data(30), 8);   % get depth
     if depth > 8    % without color map
         pic_data = uint8(data(offset + 1:end));
+        
         b_array = pic_data(1:3:end);
         g_array = pic_data(2:3:end);
         r_array = pic_data(3:3:end);

@@ -1,39 +1,75 @@
 function get_histogram(file)
+% input the file name then show the histogram of the picture
 
 [pic, map] = read_img(file);
 
-if ~isempty(map)
-    set (gcf,'Position',[350,200,700,300])
+if ~isempty(map)    % with color map 
+    set (gcf,'Position',[300,200,800,300]);
     figure(1);
-    subplot(1, 2, 1);
+    subplot(1, 3, 1);   % the first picture of the 1*3 pictures in a figure
     imshow(pic, map);
+    title('Original picture');
     
-    PR = get_probability(pic);
-    figure(1);subplot(1,2,2);bar(0:255, PR,'g') %绘制直方图
-    xlim([0 255]);
-    title('原图像直方图')
-    xlabel('Grey level')
-    ylabel('Probability of occurrence')
+    figure(1);
+    subplot(1, 3, 2);
+    imshow(pic);
+    title('Grey-scale picture');
+
+    figure(1);
+    subplot(1, 3, 3);
+    PR = get_probability(pic);  % caculate each grey level probability
+    plot(0:255, PR, 'black');   % draw as hitogram
+    xlim([0 255]);              % limit the x of the hitogram
+    title('Histogram');
+    xlabel('Grey level');
+    ylabel('Times');
 else
+    set (gcf,'Position',[300, 100, 800, 500]);
     figure(1);
     subplot(2, 3, 1);
-    imshow(pic);
+    imshow(pic, map);
+    title('Original picture');
     
     figure(1);
     subplot(2, 3, 2);
-    imhist(pic(:,:,1));
-    
+    grey = rgb2grey(pic);
+    imshow(grey);
+    title('Grey-scale picture');
+
     figure(1);
     subplot(2, 3, 3);
-    imhist(pic(:,:,2));
+    PR = get_probability(grey); % caculate each grey level probability
+    plot(0:255, PR, 'k')
+    xlim([0 255]);
+    title('Histogram');
+    xlabel('Grey level');
+    ylabel('Times');
     
     figure(1);
     subplot(2, 3, 4);
-    imhist(pic(:,:,3));
+    PR = get_probability(pic(:,:,1));   % caculate each red probability
+    plot(0:255, PR, 'r');
+    xlim([0 255]);
+    title('Histogram');
+    xlabel('Red level');
+    ylabel('Times');
     
     figure(1);
     subplot(2, 3, 5);
-    grey = rgb2grey(pic);
-    imhist(grey);
+    PR = get_probability(pic(:,:,2));   % caculate each green level probability
+    plot(0:255, PR, 'g');
+    xlim([0 255]);
+    title('Histogram');
+    xlabel('Green level');
+    ylabel('Times');
+    
+    figure(1);
+    subplot(2, 3, 6);
+    PR = get_probability(pic(:,:,3));   % caculate each blue level probability
+    plot(0:255, PR, 'b');
+    xlim([0 255]);
+    title('Histogram');
+    xlabel('Blue level');
+    ylabel('Times');
 end
 
