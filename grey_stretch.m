@@ -50,12 +50,39 @@ if ~isnan(a) && ~isnan(b)
     xlabel('Grey level');
     ylabel('Times');
     
-    size(grey)
-    size(PR)
+    [m, n] = size(grey);
+    %for i = 0:255
+     %   idx = find(grey <= i);
+     %   pr = size(idx) / (m*n);
+      %  
+      %  for j = 1:length(idx)
+      %      pos = idx(j, 1);
+      %      grey(pos) = floor(256 * pr(1));
+      %  end
+    %end
+    
+
+    [counts,x]=imhist(H);  % ??????x?????count
+    loction=find(counts~=0); % ??????????0????
+    for j=1:length(loction)
+        CDF=sum(counts(loction(1:j)));  % ??????????????CDF
+        P=find(H==x(loction(j)));
+    end
+    HISTEQ(:,:,i)=H; % ????????????????
+    
     figure(1);
     subplot(2, 3, 3);
     imshow(grey);
-    title('Grey stretch');
+    title('Grey equalize');
+    
+    figure(1);
+    subplot(2, 3, 6);
+    PR = get_probability(grey);  % caculate each grey level probability
+    plot(0:255, PR, 'black');    % draw as hitogram
+    xlim([0 255]);               % limit the x of the hitogram
+    title('Grey equalize');
+    xlabel('Grey level');
+    ylabel('Times');
 else
     error('Input error!');
 end
