@@ -3,7 +3,7 @@ function [pic, map, transparency] = read_img(file_name)
 
 [fid, message] = fopen(file_name);
 if fid < 0
-    error(['Can not open ' file_name '.' message])
+    error(['Can not open ' file_name '.' message]);
 else
     data = fread(fid);
     
