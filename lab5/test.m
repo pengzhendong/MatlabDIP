@@ -1,152 +1,84 @@
-point=imread('point.bmp'); 
-pointsp=imread('point_sp.bmp'); 
+point = imread('point.bmp'); 
+pointsp = imread('point_sp.bmp'); 
 
-X=zeros(12,12); 
-Y=zeros(12,12); 
-
-X=reshape(X,1,144); 
-Y=reshape(Y,1,144); 
- 
-k=1; 
-for i=1:128 
-    for j=1:128 
-        if point(i,j)==0 
-            X(k)=i;
-            Y(k)=j;
-            k=k+1;
+% Get the pixel position of the points
+X = zeros(12, 12); 
+Y = zeros(12, 12); 
+X = reshape(X, 1, 144); 
+Y = reshape(Y, 1, 144); 
+k = 1; 
+for i = 1:128 
+    for j = 1:128 
+        if point(i, j) == 0 
+            X(k) = i;
+            Y(k) = j;
+            k = k + 1;
         end 
     end 
 end 
- 
-X=reshape(X,12,12); 
-Y=reshape(Y,12,12); 
+X = reshape(X, 12, 12); 
+Y = reshape(Y, 12, 12); 
 
  
-Xsp=zeros(12,12); 
-Ysp=zeros(12,12); 
+Xsp = zeros(12, 12); 
+Ysp = zeros(12, 12); 
+Xsp = reshape(Xsp, 1, 144); 
+Ysp = reshape(Ysp, 1, 144); 
  
-Xsp=reshape(Xsp,1,144); 
-Ysp=reshape(Ysp,1,144); 
- 
-k=1; 
-count=0;xsum=0;ysum=0; 
-[m,n]=size(point); 
-pointRecord=zeros(m,n); 
- 
-for i=1:1:128 
-    for j=1:1:128 
-        
-        if pointRecord(i,j)==0
-            if pointsp(i,j)<125 
-                pointRecord(i,j)=1;
-                xsum=i;ysum=j;count=count+1; 
-                if (i==1)|(j==1)|(i==128)|(j==128) 
-                else 
-                    if (pointRecord(i,j-1)==1)|(pointRecord(i,j+1)==1)|(pointRecord(i+1,j-1)==1)|(pointRecord(i+1,j+1)==1)|(pointRecord(i+1,j)==1)|(pointRecord(i-1,j)==1)|(pointRecord(i-1,j-1)==1)|(pointRecord(i-1,j+1)==1) 
-                        pointRecord(i,j)=1; 
-                        xsum=0; 
-                        ysum=0; 
-                        count=0; 
-                    else 
-                        i1=i;j1=j; 
-                        while pointsp(i1,j1-1)<125 
-                            pointRecord(i1,j1-1)=1; 
-                            xsum=xsum+i1; 
-                            ysum=ysum+j1-1; 
-                            count=count+1; 
-                            j1=j1-1; 
-                        end 
-                        i1=i;j1=j; 
-                        while pointsp(i1,j1+1)<125 
-                            pointRecord(i1,j1+1)=1; 
-                            xsum=xsum+i1; 
-                            ysum=ysum+j1+1; 
-                            count=count+1; 
-                            j1=j1+1; 
-                        end 
-                        i1=i;j1=j; 
-                        while pointsp(i1-1,j1)<125 
-                            pointRecord(i1-1,j1)=1; 
-                            xsum=xsum+i1-1; 
-                            ysum=ysum+j1; 
-                            count=count+1; 
-                            i1=i1-1; 
-                        end 
-                        i1=i;j1=j; 
-                        while pointsp(i1+1,j1)<125 
-                            pointRecord(i1+1,j1)=1; 
-                            xsum=xsum+i1+1; 
-                            ysum=ysum+j1; 
-                            count=count+1; 
-                            i1=i1+1; 
-                        end 
-                        i1=i;j1=j; 
-                        while pointsp(i1+1,j1-1)<125 
-                            pointRecord(i1+1,j1-1)=1; 
-                            xsum=xsum+i1+1; 
-                            ysum=ysum+j1-1; 
-                            count=count+1; 
-                            i1=i1+1;j1=j1-1; 
-                        end 
-                        i1=i;j1=j; 
-                        while pointsp(i1+1,j1+1)<125 
-                            pointRecord(i1+1,j1+1)=1; 
-                            xsum=xsum+i1+1; 
-                            ysum=ysum+j1+1; 
-                            count=count+1; 
-                            i1=i1+1;j1=j1+1; 
-                        end 
-                        i1=i;j1=j; 
-                        while pointsp(i1-1,j1-1)<125 
-                            pointRecord(i1-1,j1-1)=1; 
-                            xsum=xsum+i1-1; 
-                            ysum=ysum+j1-1; 
-                            count=count+1; 
-                            i1=i1-1;j1=j1-1; 
-                        end 
-                        i1=i;j1=j; 
-                        while pointsp(i1-1,j1+1)<125 
-                            pointRecord(i1-1,j1+1)=1; 
-                            xsum=xsum+i1-1; 
-                            ysum=ysum+j1+1; 
-                            count=count+1; 
-                            i1=i1-1;j1=j1+1; 
-                        end 
-                        xsum=fix(xsum/count); 
-                        ysum=fix(ysum/count); 
-                         
-                        Xsp(k)=xsum;Ysp(k)=ysum; 
-                        k=k+1; 
-                        xsum=0; 
-                        ysum=0; 
-                        count=0; 
-                    end 
+% Get the pixel position of the pointsp
+pointRecord = zeros(128, 128); 
+k = 1; 
+for i = 1:128 
+    for j = 1:128 
+        if pointsp(i, j) < 125 && pointRecord(i,j) == 0 % A black point without recorded
+            pointRecord(i, j) = 1;
+            xsum = i;
+            ysum = j;
+            count = 1;
+        	% There is no record around the black point
+            if (pointRecord(i, j-1) ~= 1) && (pointRecord(i, j+1) ~= 1) && (pointRecord(i+1, j-1) ~= 1) && (pointRecord(i+1, j+1) ~= 1) && (pointRecord(i+1, j) ~= 1) && (pointRecord(i-1, j) ~= 1) && (pointRecord(i-1, j-1) ~= 1) && (pointRecord(i-1, j+1) ~= 1)
+                for x = -1:1
+                    for y = -1:1
+                        if x~=0 && y~=0
+                            itemp = i;
+                            jtemp = j;
+                            % Caculate the sum of the pixels of one point
+                            while pointsp(itemp + x, jtemp + y) < 125
+                                pointRecord(itemp + x, jtemp + y) = 1; 
+                                xsum = xsum + itemp + x; 
+                                ysum = ysum+ jtemp + y; 
+                                count = count + 1; 
+                                itemp = itemp + x;
+                                jtemp = jtemp + y; 
+                            end
+                        end
+                    end
                 end 
+                Xsp(k) = fix(xsum / count); 
+                Ysp(k) = fix(ysum / count);
+                k = k + 1;  
             end 
         end 
     end 
 end 
- 
-Xsp=reshape(Xsp,12,12); 
-Ysp=reshape(Ysp,12,12); 
- 
-
-Xsptemp=zeros(12,12); 
-Ysptemp=zeros(12,12); 
- 
-pointbak=zeros(128,128); 
-for i=1:1:12 
-    for j=1:1:12 
-        if((Xsp(i,j)~=0)&(Ysp(i,j)~=0)) 
+Xsp = reshape(Xsp, 12, 12); 
+Ysp = reshape(Ysp, 12, 12); 
+  
+pointbak = zeros(128, 128); 
+for i=1:12 
+    for j=1:12 
+        if((Xsp(i,j)~=0)&&(Ysp(i,j)~=0)) 
             pointbak(Xsp(i,j),Ysp(i,j))=1; 
         end 
     end 
 end 
  
- 
+Xsptemp = zeros(12, 12); 
+Ysptemp = zeros(12, 12);
+
 a1=80;b1=64; 
 j=0;
-for i=1:1:6 
+for i=1:6 
     while(pointbak(a1,b1)==0)
         b1=b1-1;
         while(pointbak(a1-j,b1)==0)
@@ -167,7 +99,7 @@ end
  
 a1=91;b1=61; 
 j=0;
-for i=1:1:6 
+for i=1:6 
     while(pointbak(a1,b1)==0)
         b1=b1-1;
         while(pointbak(a1-j,b1)==0)
@@ -189,7 +121,7 @@ end
  
 a1=103;b1=62; 
 j=0;
-for i=1:1:5 
+for i=1:5 
     while(pointbak(a1,b1)==0)
         b1=b1-1;
         while(pointbak(a1-j,b1)==0)
@@ -211,7 +143,7 @@ end
  
 a1=115;b1=62;
 j=0;
-for i=1:1:4 
+for i=1:4 
     while(pointbak(a1,b1)==0)
         b1=b1-1;
         while(pointbak(a1-j,b1)==0)
@@ -233,7 +165,7 @@ end
  
 a1=123;b1=62; 
 j=0;
-for i=1:1:3 
+for i=1:3 
     while(pointbak(a1,b1)==0)
         b1=b1-1;
         while(pointbak(a1-j,b1)==0)
@@ -255,7 +187,7 @@ end
  
 a1=128;b1=62; 
 j=0;
-for i=1:1:2 
+for i=1:2 
    while(pointbak(a1,b1)==0)
         b1=b1-1;
         while(pointbak(a1-j,b1)==0)
@@ -297,16 +229,16 @@ Ysptemp(12,4)=(Ysptemp(11,4)+Ysptemp(12,5))/2;
 
  
  
-for x=1:1:6 
-    for y =1:1:6 
+for x=1:6 
+    for y =1:6 
         Xsptemp(x,y)=128-Xsptemp(13-x,y); 
         Ysptemp(x,y)=Ysptemp(13-x,y); 
     end 
 end 
  
 
-for x=1:1:6 
-    for y =7:1:12 
+for x=1:6 
+    for y =7:12 
         Xsptemp(x,y)=Xsptemp(x,13-y); 
         Ysptemp(x,y)=128-Ysptemp(x,13-y); 
     end 
@@ -324,17 +256,14 @@ end
  
 Xsp=Xsptemp; 
 Ysp=Ysptemp; 
-%--------------------------------------------------------------------------
  
   
 tiger_sp1=imread('tiger_sp.bmp'); 
-tiger_sp=imresize(tiger_sp1,[128,128],'bilinear'); 
-imwrite(tiger_sp,'tiger_sps.bmp'); 
-tiger=tiger_sp; 
+tiger=imresize(tiger_sp1,[128,128],'bilinear');  
 
-subplot(1,3,1); 
+subplot(1,2,1); 
 imshow(tiger_sp1); 
-title('原图');
+title('????');
 
 PointC=zeros(14,14);
 PointR=zeros(14,14);
@@ -372,17 +301,16 @@ for k = 1 : 14
     PointY(14, k) = 128; 
 end 
 
-for i=1:1:13 
-    for j=1:1:13
+for i=1:13 
+    for j=1:13
         A=[PointC(i,j),PointR(i,j),PointC(i,j)*PointR(i,j),1; 
            PointC(i,j+1),PointR(i,j+1),PointC(i,j+1)*PointR(i,j+1),1; 
            PointC(i+1,j),PointR(i+1,j),PointC(i+1,j)*PointR(i+1,j),1; 
            PointC(i+1,j+1),PointR(i+1,j+1),PointC(i+1,j+1)*PointR(i+1,j+1),1]; 
         TargetX=[PointX(i,j);PointX(i,j+1);PointX(i+1,j);PointX(i+1,j+1)]; 
         TargetY=[PointY(i,j);PointY(i,j+1);PointY(i+1,j);PointY(i+1,j+1)]; 
-        A_1=inv(A); 
-        CoefX=A_1*TargetX; 
-        CoefY=A_1*TargetY; 
+        CoefX=A\TargetX; 
+        CoefY=A\TargetY; 
         for x=PointC(i,j):1:PointC(i,j+1) 
             for y=PointR(i,j):1:PointR(i+1,j) 
                 a=[x,y,x*y,1]; 
@@ -393,6 +321,6 @@ for i=1:1:13
     end 
 end 
 tiger1=imresize(tiger,[216,176],'bilinear'); 
-subplot(1,3,3); 
+subplot(1,2,2); 
 imshow(tiger1); 
-title('变换后的图'); 
+title('??????????'); 
