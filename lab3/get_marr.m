@@ -7,7 +7,7 @@ if isempty(map)
 end
 [m, n] = size(grey);
 
-% Caculate gauss arguments
+%% Caculate gauss arguments
 sigma = min(m, n) * 0.005;
 len = ceil(6 * sigma);
 if mod(len, 2) == 0
@@ -15,11 +15,11 @@ if mod(len, 2) == 0
 end
 
 set (gcf,'Position',[300,200,800,300])
-% Original picture
+%% Original picture
 figure(1), subplot(131), imshow(grey);
 title('Original picture');
 
-% Caculate the  templet
+%% Caculate the  templet
 templet = zeros(len, len);
 for i = 1:len
     for j = 1:len
@@ -31,12 +31,12 @@ for i = 1:len
     end
 end
 
-% Edge detection
+%% Edge detection
 marr = conv2(im2double(grey), templet);
 figure(1), subplot(132), imshow(marr);
 title('Original picture');
 
-% Threshold processing
+%% Threshold processing
 threshold = max(max(marr)) * 0.18;
 for i = 1:m
     for j = 1:n
@@ -50,7 +50,7 @@ end
 subplot(133), imshow(marr);
 title('Threshold processing');
 
-% Caculate the value of LoG
+%% Caculate the value of LoG
 xa = -5*sigma:0.1:5*sigma;
 ya = xa;
 [x, y] = meshgrid(xa, ya);

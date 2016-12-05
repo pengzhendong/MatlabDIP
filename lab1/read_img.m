@@ -10,7 +10,7 @@ else
     offset = 0;
     height = 0;
     width = 0;
-    % get offset and size
+%% Get offset and size
     for i = 1:4
         offset = offset + bitshift(data(10 + i), (i - 1) * 8);
         width = width + bitshift(data(18 + i), (i - 1) * 8);

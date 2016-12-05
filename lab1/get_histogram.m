@@ -3,7 +3,8 @@ function get_histogram(file)
 
 [pic, map] = read_img(file);
 
-if ~isempty(map)    % with color map 
+if ~isempty(map)
+%% With color map
     set (gcf,'Position',[300,200,800,300]);
     figure(1);
     subplot(1, 3, 1);   % the first picture of the 1*3 pictures in a figure
@@ -24,6 +25,7 @@ if ~isempty(map)    % with color map
     xlabel('Grey level');
     ylabel('Times');
 else
+%% Without color map
     set (gcf,'Position',[300, 100, 800, 500]);
     figure(1);
     subplot(2, 3, 1);

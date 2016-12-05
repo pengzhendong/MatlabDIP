@@ -5,7 +5,7 @@ function matrix = get_ifft2(matrix)
 matrix = double(matrix);
 i = log2(m);
 
-% Change the order of the row and column of the matrix
+%% Change the order of the row and column of the matrix
 % 01234567 -> 0246 1357 -> 04 26 15 37
 p = 0:2^i-1;
 order = zeros(1, 2^i);
@@ -16,11 +16,11 @@ for t = 1:i
 end
 matrix(:,:) = matrix(order+1, order+1);
 
-% Caculate the WN twiddle factor
+%% Caculate the WN twiddle factor
 t = 0:2^(i - 1) - 1;
 WN(t+1) = exp(1j * 2*pi * t / m);
 
-% Transform the matrix by fft
+%% Transform the matrix by fft
 for L = 1:i
     B = 2^(L - 1);
     for J = 0:B - 1

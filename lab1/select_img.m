@@ -15,7 +15,7 @@ point2 = point2(1, 1:2);
 p1 = floor(min(point1, point2));	% left up
 p2 = floor(max(point1, point2));	% right down
 
-% five points as a rectangle
+%% Five points as a rectangle
 x = [p1(1) p2(1) p2(1) p1(1) p1(1)];
 y = [p1(2) p1(2) p2(2) p2(2) p1(2)];
 hold on;

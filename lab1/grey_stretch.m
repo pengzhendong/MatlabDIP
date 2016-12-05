@@ -11,7 +11,8 @@ else
     column = 3;
     set (gcf,'Position',[300, 100, 800, 500]);
 end
-% caculate the best arguments
+
+%% Caculate the best arguments
 maxi = max(max(grey));
 mini = min(min(grey));
 a = 255 / (maxi - mini);
@@ -20,7 +21,8 @@ b = 255 * mini / (maxi - mini);
 prompt = {'a', 'b'};
 dlg_title = 'y = ax + b';
 answer = inputdlg(prompt, dlg_title, [1 50; 1 50], {num2str(a), num2str(b)});
-% get the input value
+
+%% Get the input value
 a = str2double(answer(1));
 b = str2double(answer(2));
 

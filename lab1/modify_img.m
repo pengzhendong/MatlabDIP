@@ -4,17 +4,19 @@ function result = modify_img(file_name, vector, percent)
 
 [rgb, map] = read_img(file_name);
 
-% index picture to RGB
+%% Index picture to RGB
 if ~isempty(map)
     rgb = ind2rgb(rgb, map);
 end
 
 hsi = rgb2hsi(rgb);
-% get the h, s, i vector
+
+%% Get the h, s, i vector
 h = hsi(:, :, 1);
 s = hsi(:, :, 2);
 i = hsi(:, :, 3);
-% caculate
+
+%% Caculate
 if vector == 'h'
     h = h + percent;
     if h > 1
