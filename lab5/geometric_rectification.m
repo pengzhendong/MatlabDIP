@@ -1,4 +1,5 @@
 function geometric_rectification()
+% show the picture after geometric rectification
 
 point = imread('point.bmp'); 
 pointsp = imread('point_sp.bmp');
@@ -163,6 +164,7 @@ for i = 1:3
     m = m - j;
 end 
 
+% The sixth row
 m = 128;
 n = 64; 
 j = 0;
